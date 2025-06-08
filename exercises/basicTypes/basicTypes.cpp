@@ -15,20 +15,20 @@
 int main() {
   std::cout << "Using literals of different number types:\n";
   print(5);
-  print(5/2);           //FIXME
+  print(5./2);           //FIXME
   print(100/2ull);
   print(2 + 4ull);
   print(2.f + 4ull);
-  print(0u - 1u);       // FIXME
-  print(1.0000000001f); // FIXME Why is this number not represented correctly?
-  print(1. + 1.E-18);   // FIXME
+  print(0 - 1);       // FIXME
+  print(1.0000000001); // FIXME Why is this number not represented correctly?
+  print(1.L + 1.L*1.E-18);   // FIXME
 
   std::cout << "\nUsing increment and decrement operators:\n";
   int a = 1;
   int b;
   int c;
   print(b = a++);       // Q: What is the difference between a++ and ++a?
-  print(c = ++a);
+  print(c = ++a);       // A: a++ increments a after printing, ++a before printing
   print(a);
   print(b);
   print(c);
@@ -36,43 +36,45 @@ int main() {
   std::cout << "\nCompound assignment operators:\n";
   int n = 1;
   print(n *= 2);        // Q: Is there a difference between this and the next line?
-  print(n *= 2.9);
+  print(n *= 2.9);      // A: 2.9*2 = 5.8, truncated to 5 since n is integer
   print(n -= 1.1f);
   print(n /= 4);        // Q: Based on the results of these expressions, is there a better type to be used for n?
-
+                        // A: float or double
   std::cout << "\nLogic expressions:\n";
   const bool alwaysTrue = true;
   bool condition1 = false;
   bool condition2 = true;
   print( alwaysTrue && condition1 && condition2 );
   print( alwaysTrue || condition1 && condition2 );  // Q: Why does operator precedence render this expression useless?
+                                                    // A: True || c1 && c2 = True or (c1 and c2) = True
   print( alwaysTrue && condition1 || condition2 );
   print(condition1 != condition1);                  // Q: What is the difference between this and the following expression?
-  print(condition2 = !condition2);
+  print(condition2 = !condition2);                  // A: != is inequality operator, in second line c2 is assigned the value of !c2
   print( alwaysTrue && condition1 && condition2 );
   print( alwaysTrue || condition1 && condition2 );
   print( alwaysTrue && condition1 || condition2 );
 
   std::cout << '\n';
   print( false || 0b10 );     // Q: What is the difference between || and | ?
-  print( false | 0b10 );
+  print( false | 0b10 );      // A: || is boolean OR, | is bitwise OR
   printBinary( 0b1 & 0b10 );
   printBinary( 0b1 | 0b10 );
   printBinary( 0b1 && 0b10 ); // Q: Are the operators && and || appropriate for integer types?
-  printBinary( 0b1 || 0b10 );
+  printBinary( 0b1 || 0b10 ); // A: Non-zero integer values are treated as True and zero values as False
 
   std::cout << "\nPlay with characters and strings:\n";
   print("a");                 // Q: Why is this expression two bytes at run time, the next only one?
-  print('a');
+  print('a');                 // A: "a" is a string that has hidden termination character, hence 2 bytes. 'a' is char
 
   char charArray[20];
   char* charPtr = charArray;
-  charArray[19] = 0; // Make sure that our string is terminated with the null byte
+  charArray[19] = '\0'; // Make sure that our string is terminated with the null byte
 
   print(charArray);
   print(charArray[0] = 'a');
   print(charArray);
   print(charArray[1] = 98);
+  charArray[2] = '\0';
   print(charArray);
   print(charPtr);
   // FIXME: Ensure that no unexpected garbage is printed above

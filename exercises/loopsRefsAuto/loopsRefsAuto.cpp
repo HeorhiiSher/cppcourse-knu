@@ -19,7 +19,12 @@ int main() {
    // Task 1:
    // Write a for loop that initialises each struct's resultA and resultB with ascending integers.
    // Verify the output of the program before and after you do this.
-
+   for (int i = 0; i < 10; i++)
+   {
+      collection[i].resultA = i;
+      collection[i].resultB = i+10;
+   }
+   
 
    // Task 2:
    // We use a range-based for loop to analyse the array of structs.
@@ -28,7 +33,7 @@ int main() {
    // Hint: Fix the type declaration "auto" in the loop head.
    int resultA = 0;
    int resultB = 0;
-   for (auto item : collection) {
+   for (auto const & item : collection) {
       resultA += item.resultA;
       resultB += item.resultB;
    }
