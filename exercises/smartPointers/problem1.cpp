@@ -1,5 +1,5 @@
 
-
+#include <memory>
 #include <iostream>
 #include <array>
 
@@ -52,10 +52,8 @@ void changeLargeObject( LargeObject & object ) {
 void doStuff() {
 
     // MAKE YOUR CHANGES IN THIS FUNCTION
-
-    auto obj = new LargeObject ;
+    auto obj = std::make_unique<LargeObject>();
     changeLargeObject(*obj) ;
-    delete obj ;
 
 }
 

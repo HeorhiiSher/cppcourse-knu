@@ -1,7 +1,7 @@
 #include <memory>
 #include <stdexcept>
 
-template<typename ElementType>
+template<typename ElementType, typename Operator=std::less<>>
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen)
@@ -27,16 +27,17 @@ private:
     unsigned int m_len = 0;
     unsigned int m_maxLen;
     std::unique_ptr<ElementType[]> m_data;
+    Operator m_operator;
 };
 
-template<typename ElementType>
-bool OrderedVector<ElementType>::add(ElementType value) {
+template<typename ElementType, typename Operator>
+bool OrderedVector<ElementType, Operator>::add(ElementType value) {
     if (m_len >= m_maxLen) {
         return false;
     }
     // find insertion point
     unsigned int insertIndex = 0;
-    while (insertIndex < m_len && m_data[insertIndex] < value)
+    while (insertIndex < m_len && m_operator(m_data[insertIndex], value))
         insertIndex++;
     // move end of vector
     unsigned int index = m_len;
