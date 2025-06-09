@@ -6,6 +6,49 @@ class Fraction {
  public:
   // TODO: constructors and operators
 
+  friend bool operator==(Fraction const & a, Fraction const & b) {
+    return a.m_num == b.m_num && a.m_denom == b.m_denom;
+  }
+
+  friend std::ostream& operator<<(std::ostream& ostr, Fraction const & f) {
+    ostr << f.m_num << "/" << f.m_denom;
+    return ostr;
+  }
+
+  Fraction & operator*=(int b) {
+    m_num *= b;
+    normalize();
+    return *this;
+  }
+
+  Fraction & operator*=(Fraction const & b) {
+    m_num *= b.m_num;
+    m_denom *= b.m_denom;
+    normalize();
+    return *this;
+  }
+
+  friend Fraction operator*(Fraction a, int b) {
+    a *= b;
+    return a;
+  }
+  friend Fraction operator*(int i, Fraction const & f) { return f * i; }
+  friend Fraction operator*(Fraction a, Fraction const & b) { return a *= b; }
+
+  Fraction(int a, int b) : m_num(a), m_denom(b) {
+    normalize();
+  }
+  explicit Fraction(int n) : m_num(n), m_denom(1) {}
+
+  friend bool operator>(Fraction const & a, Fraction const & b) {
+    return a.m_num * b.m_denom > b.m_num * a.m_denom;
+  }
+
+  friend bool operator!=(Fraction const & a, Fraction const & b) { return !(a == b); }
+  friend bool operator<(Fraction const & a, Fraction const & b) { return b > a; }
+  friend bool operator<=(Fraction const & a, Fraction const & b) { return !(a > b); }
+  friend bool operator>=(Fraction const & a, Fraction const & b) { return !(a < b); }
+
  private:
   void normalize() {
     const int gcd = std::gcd(m_num, m_denom);
@@ -32,7 +75,7 @@ int main() {
   // create a fraction with values 3 (which is 3/1) and 1/3
   const Fraction three{3};
   const Fraction athird{1, 3};
-
+  
   // print the fractions
   std::cout << "Three: " << three << '\n';
   std::cout << "One third: " << athird << '\n';
@@ -80,6 +123,8 @@ int main() {
   printAndCheck("afourth > athird", (afourth > athird), false);
   printAndCheck("athird >= athird", (athird >= athird), true);
   printAndCheck("athird >= afourth", (athird >= afourth), true);
+  
+
   // the operators <=, >= and > can typically be implemented just in terms of
   // operator<. Can you do this as well? ;)
 
